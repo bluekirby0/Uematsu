@@ -1,0 +1,13 @@
+Uematsu is a replacement for SpoonyBard, which is a program used to control 
+music played within Final Fantasy XI when combined with the MusicMod plugin 
+for Ashita or the Vanatunes plugin for Windower. 
+
+It allows you to set simple rules via the GUI interface, as well as some 
+more complex and sophisticated rules by editing the profiles it produces.
+Profiles are saved as LUA scripts, and can use any of the facilities 
+available from the LUA core as well as several conditions from within 
+FFXI in order to define what tracks should play and when.
+
+Software is currently pre-alpha and lacks any useful functionality. Several 
+TODOs can be found in the code where work needs to be done, and the GUI 
+layout can give you an idea of how the program is intended to work.
