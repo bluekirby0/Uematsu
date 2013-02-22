@@ -47,6 +47,7 @@ namespace Uematsu
                 if (pol.Length != polTmp.Length)
                 {
                     KillCharThreads();
+                    pol = polTmp;
                     SpawnCharThreads();
                 }
                 Thread.Sleep(500);

@@ -11,8 +11,6 @@ namespace Uematsu
 
         //TODO: Set up variables and callback functions for form objects
 
-        //TODO: Consider lowering .NET version to 3.5 to reduce dependencies and increase availability
-
         //TODO: Cache resources from an external source (possibly FFACETools or POLUtils?) instead of the dummy static lists we are using now
 
         public Uematsu()
