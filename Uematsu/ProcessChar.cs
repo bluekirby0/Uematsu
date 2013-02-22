@@ -132,9 +132,7 @@ namespace Uematsu
             _LUA["isInResidence"] = bInResidence;
             
             _LUA.DoFile(profile+".lua");
-            ushort resTrack = (ushort)Math.Floor((double)_LUA["currentTrack"]);
-            _FFACE.Windower.SendString("/echo Check condition!");
-            return resTrack;
+            return (ushort)Math.Floor((double)_LUA["currentTrack"]);
         }
         public void BackgroundProcess()
         {

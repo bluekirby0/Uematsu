@@ -21,4 +21,4 @@ isInResidence	A boolean value that specifies whether you are in your mog house o
 
 Users familiar with FFACETools can access the player and target objects directly using "player" and "target"
 ]]--
-currentTrack = getDefaultZoneTrack(zone, isFighting, isInParty);
+currentTrack = getDefaultZoneTrack(zone, isFighting, isInParty, isInResidence);
