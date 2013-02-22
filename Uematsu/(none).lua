@@ -1,7 +1,7 @@
 require("__utils");
 require("__aliases");
-package.loaded["__template"] = nil;
 require("__template");
+
 --[[
 Vars available to this Lua environment
 currentTrack	defines what track the game is playing right now. Changing this value will cause the track to change.
