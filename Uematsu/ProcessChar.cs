@@ -134,11 +134,14 @@ namespace Uematsu
             _LUA.DoFile(profile+".lua");
             return (ushort)Math.Floor((double)_LUA["currentTrack"]);
         }
+
         public void BackgroundProcess()
         {
+            Thread.Sleep(5000);
             _FFACE = new FFACE(pol.Id);
             while (_FFACE.Player.Name == "")
                 Thread.Sleep(500);
+            
             _FFACE.Windower.SendString("/vanatunes hold on");
             sCharName = _FFACE.Player.Name;
             profile = "(none)";
