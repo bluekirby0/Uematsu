@@ -8,6 +8,7 @@ Profiles are saved as LUA scripts, and can use any of the facilities
 available from the LUA core as well as several conditions from within 
 FFXI in order to define what tracks should play and when.
 
-Software is currently pre-alpha and lacks any useful functionality. Several 
-TODOs can be found in the code where work needs to be done, and the GUI 
-layout can give you an idea of how the program is intended to work.
+Software is currently pre-alpha, but the background processing works and 
+you can currently script behavior manually. Several TODOs can be found in 
+the code where work needs to be done, and the GUI layout can give you an 
+idea of how the program is intended to work.
