@@ -4,8 +4,8 @@ for Ashita or the Vanatunes plugin for Windower.
 
 It allows you to set simple rules via the GUI interface, as well as some 
 more complex and sophisticated rules by editing the profiles it produces.
-Profiles are saved as LUA scripts, and can use any of the facilities 
-available from the LUA core as well as several conditions from within 
+Profiles are saved as Lua scripts, and can use any of the facilities 
+available from the Lua core as well as several conditions from within 
 FFXI in order to define what tracks should play and when.
 
 Software is currently pre-alpha, but the background processing works and 

@@ -17,7 +17,7 @@ namespace Uematsu
         FFACE _FFACE { get; set; }
 
 
-        Lua _LUA = new Lua();
+        Lua _Lua = new Lua();
 
         string sCharName;
         Zone m_Zone;
@@ -116,28 +116,28 @@ namespace Uematsu
             }
             
             //TODO: Provide more vars to the Lua environment as needed
-            _LUA["target"] = _FFACE.Target;
-            _LUA["player"] = _FFACE.Player;
-            _LUA["currentTrack"] = currentTrack;
-            _LUA["charName"] = sCharName;
-            _LUA["zone"] = (short)m_Zone;
-            _LUA["status"] = (short)m_Status;
-            _LUA["isFighting"] = bFighting;
-            _LUA["targetMobID"] = _FFACE.Target.ServerID;
-            _LUA["targetMobShort"] = _FFACE.Target.ID;
-            _LUA["targetMobName"] = _FFACE.Target.Name;
-            _LUA["buffs"] = buffList;
-            _LUA["isInParty"] = bPartyMember;
-            _LUA["isInBattlefield"] = bInBattlefield;
-            _LUA["isInResidence"] = bInResidence;
+            _Lua["target"] = _FFACE.Target;
+            _Lua["player"] = _FFACE.Player;
+            _Lua["currentTrack"] = currentTrack;
+            _Lua["charName"] = sCharName;
+            _Lua["zone"] = (short)m_Zone;
+            _Lua["status"] = (short)m_Status;
+            _Lua["isFighting"] = bFighting;
+            _Lua["targetMobID"] = _FFACE.Target.ServerID;
+            _Lua["targetMobShort"] = _FFACE.Target.ID;
+            _Lua["targetMobName"] = _FFACE.Target.Name;
+            _Lua["buffs"] = buffList;
+            _Lua["isInParty"] = bPartyMember;
+            _Lua["isInBattlefield"] = bInBattlefield;
+            _Lua["isInResidence"] = bInResidence;
             
-            _LUA.DoFile(profile+".lua");
-            return (ushort)Math.Floor((double)_LUA["currentTrack"]);
+            _Lua.DoFile(profile+".lua");
+            return (ushort)Math.Floor((double)_Lua["currentTrack"]);
         }
 
         public void BackgroundProcess()
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(1000);
             _FFACE = new FFACE(pol.Id);
             while (_FFACE.Player.Name == "")
                 Thread.Sleep(500);
