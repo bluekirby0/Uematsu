@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Collections.Generic;
 using FFACETools;
 using LuaInterface;
@@ -9,7 +11,13 @@ namespace Uematsu
 {
     public class ProcessChar
     {
-        
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern Int32 ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, ref IntPtr lpNumberOfBytesRead);
+        //public static extern Int32 WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, out IntPtr lpNumberOfBytesWritten);
+        ProcessModule ffximain;
+        byte[] mobFlags = new byte[65536];
+
+
         
         UInt16 currentTrack = 65535;
 
@@ -54,6 +62,12 @@ namespace Uematsu
 
             if (m_Zone != _FFACE.Player.Zone) // Zone Changed
             {
+                byte[] mobPtrTmp = new byte[4];
+                IntPtr mobPtrArraySize = new IntPtr();
+                ReadProcessMemory(pol.Handle, new IntPtr(ffximain.BaseAddress.ToInt32() + 0x8020c), mobPtrTmp, 4, ref mobPtrArraySize);
+                IntPtr mobPtr = new IntPtr(BitConverter.ToInt32(mobPtrTmp, 0));
+                ReadProcessMemory(pol.Handle, mobPtr, mobFlags, 65536, ref mobPtrArraySize);
+
                 m_Zone = _FFACE.Player.Zone;
                 execScripts = true;
             }
@@ -114,7 +128,7 @@ namespace Uematsu
             {
                 buffList.Add((int)buff);
             }
-            
+
             //TODO: Provide more vars to the Lua environment as needed
             _Lua["target"] = _FFACE.Target;
             _Lua["player"] = _FFACE.Player;
@@ -126,6 +140,7 @@ namespace Uematsu
             _Lua["targetMobID"] = _FFACE.Target.ServerID;
             _Lua["targetMobShort"] = _FFACE.Target.ID;
             _Lua["targetMobName"] = _FFACE.Target.Name;
+            _Lua["isNM"] = (bool)(((mobFlags[_FFACE.Target.ID * 4]) & 4) != 0 );
             _Lua["buffs"] = buffList;
             _Lua["isInParty"] = bPartyMember;
             _Lua["isInBattlefield"] = bInBattlefield;
@@ -137,7 +152,13 @@ namespace Uematsu
 
         public void BackgroundProcess()
         {
-            Thread.Sleep(1000);
+            do
+            {
+                Thread.Sleep(500);
+                ffximain = (from ProcessModule m in pol.Modules where m.ModuleName.ToLower() == "ffximain.dll" select m).FirstOrDefault();
+            }
+            while (ffximain == null);
+                
             _FFACE = new FFACE(pol.Id);
             while (_FFACE.Player.Name == "")
                 Thread.Sleep(500);
@@ -146,6 +167,12 @@ namespace Uematsu
             sCharName = _FFACE.Player.Name;
             profile = "(none)";
             //TODO: Check player name and set default profile
+
+            byte[] mobPtrTmp = new byte[4];
+            IntPtr mobPtrArraySize = new IntPtr();
+            ReadProcessMemory(pol.Handle, new IntPtr(ffximain.BaseAddress.ToInt32() + 0x8020c), mobPtrTmp, 4, ref mobPtrArraySize);
+            IntPtr mobPtr = new IntPtr(BitConverter.ToInt32(mobPtrTmp, 0));
+            ReadProcessMemory(pol.Handle, mobPtr, mobFlags, 65536, ref mobPtrArraySize);
             
             m_Zone = _FFACE.Player.Zone;
             uVanaHour = _FFACE.Timer.GetVanaTime().Hour;
@@ -174,7 +201,8 @@ namespace Uematsu
                 
                 Thread.Sleep(500);
             } while(Program.runCharThreads);
-            _FFACE.Windower.SendString("/vanatunes hold off");
+            if(ffximain != null)
+                _FFACE.Windower.SendString("/vanatunes hold off");
         }
     };
 };

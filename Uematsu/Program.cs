@@ -40,7 +40,8 @@ namespace Uematsu
         private static void CheckChars()
         {
             pol = Process.GetProcessesByName("pol");
-            SpawnCharThreads();
+            if (pol.Length != 0)
+                SpawnCharThreads();
             do
             {
                 Process[] polTmp = Process.GetProcessesByName("pol");
@@ -48,7 +49,8 @@ namespace Uematsu
                 {
                     KillCharThreads();
                     pol = polTmp;
-                    SpawnCharThreads();
+                    if(polTmp.Length != 0)
+                        SpawnCharThreads();
                 }
                 Thread.Sleep(500);
             } while (runThreads);

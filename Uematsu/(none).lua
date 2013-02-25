@@ -14,6 +14,8 @@ targetMobName	Currently Targeted Mob's name. Should be combined with isFighting 
 targetMobID		Currently Targeted Mob's ID. Should be combined with isFighting to prevent spastic track changes.
 targetMobShort	Currently Targeted Mob's Local ID. Should be combined with isFighting to prevent spastic 
 				track changes.
+isNM			A boolean value that tells you if your current target is a NM. Not necessarily 100% accurate, but it
+				is reliable enough and doesn't depend on a database, so it won't become outdated.
 buffs			A list type with all of the (de)buffs you have applied. Use hasBuff(buff) for easy checking.
 isInParty		A boolean value that tells you if you are currently in a party.
 isInBattlefield	A boolean value that is a shortcut to check if you have buff 254
