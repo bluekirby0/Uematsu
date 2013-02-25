@@ -13,17 +13,13 @@ namespace Uematsu
     {
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern Int32 ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, ref IntPtr lpNumberOfBytesRead);
-        //public static extern Int32 WriteProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, out IntPtr lpNumberOfBytesWritten);
         ProcessModule ffximain;
         byte[] mobFlags = new byte[65536];
 
-
-        
         UInt16 currentTrack = 65535;
 
         internal Process pol;
         FFACE _FFACE { get; set; }
-
 
         Lua _Lua = new Lua();
 
