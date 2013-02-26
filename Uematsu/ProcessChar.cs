@@ -32,6 +32,7 @@ namespace Uematsu
         bool bPartyMember;
         bool bInBattlefield;
         bool bInResidence;
+        bool bPartyFighting = false;
 
         string profile;
 
@@ -42,12 +43,27 @@ namespace Uematsu
             bool bFightingTmp = false;
             bool bInBattlefieldTmp = false;
             bool bInResidenceTmp = false;
-
+            bool bPartyFightingTmp = false;
+            
             if (_FFACE.Party.Party0Count == 1 && _FFACE.Party.Party1Count == 0 && _FFACE.Party.Party2Count == 0)
                 bPartyMemberTmp = false;
             else
                 bPartyMemberTmp = true;
-
+            
+            for (UInt16 i = 1; i < 4096; i++)
+            {
+                int thisMob = i;
+                foreach (KeyValuePair<byte,FFACE.PartyMemberTools> member in _FFACE.PartyMember)
+                {
+                    if (_FFACE.NPC.IsActive(thisMob) && _FFACE.NPC.IsClaimed(i) && _FFACE.NPC.NPCType(i) == NPCType.Mob &&
+                        !(_FFACE.NPC.Status(i) == Status.Dead1) && !(_FFACE.NPC.Status(i) == Status.Dead2))
+                    {
+                        if (_FFACE.NPC.ClaimedID(thisMob) == member.Value.ServerID)
+                            bPartyFightingTmp = true;
+                    }
+                }
+            }
+            
             bInResidenceTmp = (_FFACE.NPC.Name(2048) == "Door: Back to Town");
 
             foreach (StatusEffect item in m_Buffs)
@@ -114,6 +130,12 @@ namespace Uematsu
                 execScripts = true;
             }
 
+            if (bPartyFighting != bPartyFightingTmp) //Party started or stopped combat
+            {
+                bPartyFighting = bPartyFightingTmp;
+                execScripts = true;
+            }
+
             return execScripts;
         }
 
@@ -133,6 +155,7 @@ namespace Uematsu
             _Lua["zone"] = (short)m_Zone;
             _Lua["status"] = (short)m_Status;
             _Lua["isFighting"] = bFighting;
+            _Lua["isPartyFighting"] = bPartyFighting;
             _Lua["targetMobID"] = _FFACE.Target.ServerID;
             _Lua["targetMobShort"] = _FFACE.Target.ID;
             _Lua["targetMobName"] = _FFACE.Target.Name;

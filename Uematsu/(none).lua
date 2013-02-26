@@ -10,6 +10,8 @@ zone			ID of the current zone. TODO: Add some aliases to compare to.
 status			Status of your character. Can be used to check for just about anything from fighting to fishing
 				to riding a chocobo
 isFighting		A boolean value that is a shortcut to status == 1
+isPartyFighting	A smarter combat detection that will check if any mobs in range are currently claimed by a party or
+				alliance member.
 targetMobName	Currently Targeted Mob's name. Should be combined with isFighting to prevent spastic track changes.
 targetMobID		Currently Targeted Mob's ID. Should be combined with isFighting to prevent spastic track changes.
 targetMobShort	Currently Targeted Mob's Local ID. Should be combined with isFighting to prevent spastic 
