@@ -33,9 +33,32 @@ namespace Uematsu
         bool bInBattlefield;
         bool bInResidence;
         bool bPartyFighting = false;
+        bool bPartyFightingNM;
 
         string profile;
 
+        private bool MobPartyCheck()
+        {
+            bool bPartyFightingTmp = false;
+            for (UInt16 i = 1; i < 4096; i++)
+            {
+                int thisMob = i;
+                foreach (KeyValuePair<byte, FFACE.PartyMemberTools> member in _FFACE.PartyMember)
+                {
+                    if (_FFACE.NPC.IsActive(thisMob) && _FFACE.NPC.IsClaimed(i) && _FFACE.NPC.NPCType(i) == NPCType.Mob &&
+                        !(_FFACE.NPC.Status(i) == Status.Dead1) && !(_FFACE.NPC.Status(i) == Status.Dead2) && !(_FFACE.NPC.Status(i) == Status.Standing))
+                    {
+                        if (_FFACE.NPC.ClaimedID(thisMob) == member.Value.ServerID)
+                        {
+                            if(((mobFlags[thisMob * 4]) & 4) != 0)
+                                bPartyFightingNM = true;
+                            bPartyFightingTmp = true;
+                        }
+                    }
+                }
+            }
+            return bPartyFightingTmp;
+        }
         private bool CheckConditions()
         {
             bool execScripts = false;
@@ -44,26 +67,15 @@ namespace Uematsu
             bool bInBattlefieldTmp = false;
             bool bInResidenceTmp = false;
             bool bPartyFightingTmp = false;
+            bPartyFightingNM = false;
             
             if (_FFACE.Party.Party0Count == 1 && _FFACE.Party.Party1Count == 0 && _FFACE.Party.Party2Count == 0)
                 bPartyMemberTmp = false;
             else
                 bPartyMemberTmp = true;
-            
-            for (UInt16 i = 1; i < 4096; i++)
-            {
-                int thisMob = i;
-                foreach (KeyValuePair<byte,FFACE.PartyMemberTools> member in _FFACE.PartyMember)
-                {
-                    if (_FFACE.NPC.IsActive(thisMob) && _FFACE.NPC.IsClaimed(i) && _FFACE.NPC.NPCType(i) == NPCType.Mob &&
-                        !(_FFACE.NPC.Status(i) == Status.Dead1) && !(_FFACE.NPC.Status(i) == Status.Dead2))
-                    {
-                        if (_FFACE.NPC.ClaimedID(thisMob) == member.Value.ServerID)
-                            bPartyFightingTmp = true;
-                    }
-                }
-            }
-            
+
+            bPartyFightingTmp = MobPartyCheck();
+
             bInResidenceTmp = (_FFACE.NPC.Name(2048) == "Door: Back to Town");
 
             foreach (StatusEffect item in m_Buffs)
@@ -160,6 +172,7 @@ namespace Uematsu
             _Lua["targetMobShort"] = _FFACE.Target.ID;
             _Lua["targetMobName"] = _FFACE.Target.Name;
             _Lua["isNM"] = (bool)(((mobFlags[_FFACE.Target.ID * 4]) & 4) != 0 );
+            _Lua["isPartyFightingNM"] = bPartyFightingNM;
             _Lua["buffs"] = buffList;
             _Lua["isInParty"] = bPartyMember;
             _Lua["isInBattlefield"] = bInBattlefield;

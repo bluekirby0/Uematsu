@@ -1,4 +1,4 @@
-function getDefaultZoneTrack(zone, isPartyFighting, isInParty, isInResidence)
+function getDefaultZoneTrack(zone, isFighting, isInParty, isPartyFighting, isInResidence)
 	local returnTrack = 0;
 	
 	if(zone == 0 and isPartyFighting and isInParty) then returnTrack = 0;
