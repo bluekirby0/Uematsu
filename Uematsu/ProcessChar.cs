@@ -14,7 +14,7 @@ namespace Uematsu
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern Int32 ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, [In, Out] byte[] buffer, UInt32 size, ref IntPtr lpNumberOfBytesRead);
         ProcessModule ffximain;
-        byte[] mobFlags = new byte[65536];
+        byte[] mobFlags = new byte[4096*4];
 
         UInt16 currentTrack = 65535;
 
@@ -62,7 +62,7 @@ namespace Uematsu
                 IntPtr mobPtrArraySize = new IntPtr();
                 ReadProcessMemory(pol.Handle, new IntPtr(ffximain.BaseAddress.ToInt32() + 0x8020c), mobPtrTmp, 4, ref mobPtrArraySize);
                 IntPtr mobPtr = new IntPtr(BitConverter.ToInt32(mobPtrTmp, 0));
-                ReadProcessMemory(pol.Handle, mobPtr, mobFlags, 65536, ref mobPtrArraySize);
+                ReadProcessMemory(pol.Handle, mobPtr, mobFlags, 4096*4, ref mobPtrArraySize);
 
                 m_Zone = _FFACE.Player.Zone;
                 execScripts = true;
@@ -168,7 +168,7 @@ namespace Uematsu
             IntPtr mobPtrArraySize = new IntPtr();
             ReadProcessMemory(pol.Handle, new IntPtr(ffximain.BaseAddress.ToInt32() + 0x8020c), mobPtrTmp, 4, ref mobPtrArraySize);
             IntPtr mobPtr = new IntPtr(BitConverter.ToInt32(mobPtrTmp, 0));
-            ReadProcessMemory(pol.Handle, mobPtr, mobFlags, 65536, ref mobPtrArraySize);
+            ReadProcessMemory(pol.Handle, mobPtr, mobFlags, 4096*4, ref mobPtrArraySize);
             
             m_Zone = _FFACE.Player.Zone;
             uVanaHour = _FFACE.Timer.GetVanaTime().Hour;
