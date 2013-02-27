@@ -9,11 +9,8 @@ namespace Uematsu
     {
         //TODO: Write script generator functions
 
-        //TODO: Track currently selected process ID
-
         //TODO: Set up variables and callback functions for form objects
 
-        //TODO: Cache resources from an external source (possibly FFACETools or POLUtils?) instead of the dummy static lists we are using now
         private void ResetProcessList()
         {
             this.comboSelectCharacterGlobal.Items.Clear();
