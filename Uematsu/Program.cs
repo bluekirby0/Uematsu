@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows.Forms;
 using System.Diagnostics;
-
+using FFACETools;
+using System.Xml;
 
 namespace Uematsu
 {
@@ -10,9 +12,48 @@ namespace Uematsu
     {
         private static Thread thCheckChars;
         private static List<Thread> m_CharThreads = new List<Thread>();
-        private static Process[] pol;
+        internal static Process[] pol;
         private static bool runThreads = true;
         internal static bool runCharThreads = true;
+        internal static List<string> zoneList = new List<string>();
+        internal static List<string> statusList = new List<string>();
+        private static XmlReader trackXml = XmlReader.Create("TrackList.xml");
+        internal static Dictionary<string,uint> trackList = new Dictionary<string,uint>();
+
+        internal static Process selectedProcess;
+
+        private static void populateResources()
+        {
+            foreach(Zone i in Enum.GetValues(typeof(Zone)))
+                zoneList.Add(FFACE.ParseResources.GetAreaName(i));
+            foreach (StatusEffect i in Enum.GetValues(typeof(StatusEffect)))
+                statusList.Add(FFACE.ParseResources.GetStatusEffectName(i));
+            while (trackXml.Read())
+            {
+                if (trackXml.IsStartElement() && trackXml.Name == "song")
+                {
+                    uint index = uint.MaxValue;
+                    try{
+                        index = Convert.ToUInt32(trackXml["index"]);
+                    }
+                    catch(FormatException e)
+                    {
+                        Console.WriteLine("Invalid Track Number: {0}",trackXml["index"]);
+                    }
+                    catch (OverflowException e)
+                    {
+                        Console.WriteLine("Track number too large: {0}",trackXml["index"]);
+                    }
+                    finally{
+                        if (trackXml.Read() && index != uint.MaxValue)
+                        {
+                            trackList.Add(trackXml.Value.Trim(),index);
+                        }
+                    }
+                }
+            }
+            
+        }
 
         private static void SpawnCharThreads()
         {
@@ -58,6 +99,7 @@ namespace Uematsu
 
         static void Main()
         {
+            populateResources();
             thCheckChars = new Thread(new ThreadStart(Program.CheckChars));
             thCheckChars.IsBackground = true;
             thCheckChars.Start();
