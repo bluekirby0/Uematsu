@@ -162,6 +162,7 @@ namespace Uematsu
             //TODO: Provide more vars to the Lua environment as needed
             _Lua["target"] = _FFACE.Target;
             _Lua["player"] = _FFACE.Player;
+            _Lua["vanaHour"] = uVanaHour;
             _Lua["currentTrack"] = currentTrack;
             _Lua["charName"] = sCharName;
             _Lua["zone"] = (short)m_Zone;

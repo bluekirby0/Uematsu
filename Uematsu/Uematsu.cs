@@ -7,9 +7,7 @@ namespace Uematsu
 {
     public partial class Uematsu : Form
     {
-        //TODO: Write script generator functions
-
-        //TODO: Set up variables and callback functions for form objects
+        //TODO: Set up callback functions for form objects
 
         private void ResetProcessList()
         {

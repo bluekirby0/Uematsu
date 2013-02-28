@@ -8,6 +8,7 @@ currentTrack		Defines what track the game is playing right now. Changing this va
 					to change.
 charName			Current Character Name. Profiles can be auto-set based on character name, so this is usually 
 					not needed.
+vanaHour			Hour of the day in the game-world.
 zone				ID of the current zone. Check __aliases.lua for some shortcuts to call these.
 status				Status of your character. Can be used to check for just about anything from fighting to 
 					fishing to riding a chocobo

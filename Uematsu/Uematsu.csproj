@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ScriptGen.cs" />
     <Compile Include="ProcessChar.cs" />
     <Compile Include="Uematsu.cs">
       <SubType>Form</SubType>
